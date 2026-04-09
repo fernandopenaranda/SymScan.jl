@@ -9,7 +9,7 @@ This package offers a tool `preliminary_symmetry_check` to check if the spectrum
 
 **Remark:** It is important to emphasize that the output of this tool **does not constitute a full proof** that a given symmetry is satisfied as it also concerns the eigenvalues. The results should be interpreted as necessary checks for compliance with a given symmetry \[ g \in G\], but not sufficient, i.e., `preliminary_symmetry_check` tests whether
 
-\[ H(k) = H(Rk) \]
+$$H(k) = H(Rk)$$
 
 The general symmetry condition is instead:
 
