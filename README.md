@@ -5,7 +5,7 @@
 [![Build Status](https://github.com/fernandopenaranda/SymScan.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/fernandopenaranda/SymScan.jl/actions/workflows/CI.yml?query=branch%3Amain)
 [![Coverage](https://codecov.io/gh/fernandopenaranda/SymScan.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/fernandopenaranda/SymScan.jl)
 
-This package offers a general tool `preliminary_symmetry_check` to check if the spectrum of a provided spinless k-dependent hermitian Hamiltonian matrix `H(k)` with `H::Function` and `k::AbstractArray` obeys the symmetry operations of a given magnetic point group `G` passed either in Schönflies or in Hermann–Mauguin notation.
+This package offers a general tool `preliminary_symmetry_check` to check if the spectrum of a provided spinless k-dependent hermitian Hamiltonian matrix $H(k)$ with `H::Function` and `k::AbstractArray` obeys the symmetry operations of a given magnetic point group `G` passed either in Schönflies or in Hermann–Mauguin notation.
 
 **Remark:** It is important to emphasize that the output of this tool **does not constitute a full proof** that a given symmetry is satisfied as it also concerns the eigenvalues. The results should be interpreted as necessary checks for compliance with a given symmetry \[ g \in G\], but not sufficient, i.e., `preliminary_symmetry_check` tests whether
 
