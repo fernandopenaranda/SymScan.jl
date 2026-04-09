@@ -1,0 +1,13 @@
+name = "SymScan"
+uuid = "4bc7581b-18d6-4347-acfd-0557fa3a92d1"
+authors = ["Fernando Peñaranda"]
+version = "1.0.0-DEV"
+
+[compat]
+julia = "1.9"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]

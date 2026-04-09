@@ -1,0 +1,3 @@
+[deps]
+Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
+SymScan = "4bc7581b-18d6-4347-acfd-0557fa3a92d1"
