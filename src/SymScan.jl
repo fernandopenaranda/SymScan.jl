@@ -1,5 +1,5 @@
 module SymScan
-    using Brillouin, Crystalline
+    using Crystalline
     using LinearAlgebra
     using StringDistances
 # Write your package code here.
