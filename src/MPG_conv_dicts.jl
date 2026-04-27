@@ -32,3 +32,23 @@ const schonflies_to_hm = Dict(
     "Td"  => "P-43m",
     "Oh"  => "Pm-3m"
 )
+
+const wallpaper_HM = [
+    "P1",    # 1
+    "P2",    # 2
+    "Pm",    # 3
+    "Pg",    # 4
+    "Cm",    # 5
+    "Pmm",   # 6
+    "Pmg",   # 7
+    "Pgg",   # 8
+    "Cmm",   # 9
+    "P4",    # 10
+    "P4mm",  # 11
+    "P4gm",  # 12
+    "P3",    # 13
+    "P3m1",  # 14
+    "P31m",  # 15
+    "P6",    # 16
+    "P6mm"   # 17
+]

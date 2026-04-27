@@ -9,7 +9,8 @@ Input:
     - `Rs`: real-space Bravais lattice vectors
     - `magnetic_point_group_label`: magnetic point group in Schönflies or Hermann–Mauguin notation.
     see: 
-        ISOTROPY's compilation of Daniel Litvin's magnetic space group equivalence tables (http://www.bk.psu.edu/faculty/litvin/Download.html).
+        ISOTROPY's compilation of Daniel Litvin's magnetic space group equivalence tables
+         (http://www.bk.psu.edu/faculty/litvin/Download.html).
 Remarks: 
     - It is not an absolute test but a necessary condition.
     - Only applies for spinless point groups `G` not magnetic point groups. 
@@ -27,26 +28,23 @@ Implementation details:
 
 It only acts on spinless space point groups or spinless magnetic point groups
 Crystalline.MSG_BNS_LABELs_D is the dictionary for MGpoint groups. 
+# note in k space translations do only add a phase and are not included
 """
 function preliminary_symmetry_check(h::Function, Rs, magnetic_point_group_label::String;
          tol = 1e-10, num_points = 100)
-    OGnumber = test_magnetic_point_group_syntax(magnetic_point_group_label)
-    dim = length(Rs)
-    # k line in the BZ connecting the high_sym momenta
-    ks_GSbasis = interpolate(irrfbz_path(sgnum, Rs), num_points) 
-    Gs = dualbasis(Rs)
+    OGnumber, HMlabel = test_magnetic_point_group_syntax(magnetic_point_group_label)
+    dim = length(Rs) # k line in the BZ connecting the high_sym momenta:
+    ks_GSbasis = interpolate(irrfbz_path(parent_spacegroup(HMlabel, dim), Rs, dim), num_points) 
+    Gs = Crystalline.Bravais.dualbasis(Rs)
     sg = mspacegroup(OGnumber)
-    # println("", keys(high_sym_momenta_Gsbasis))
     for sym_op in sg
         s = 0.0
         for k_GSbasis in ks_GSbasis
-            # k =  high_sym_momenta_Gsbasis[klabel] .* Gs 
             k =  reduce(+, k_GSbasis .* Gs) # k in the Hamiltonian basis 
             eks = real.(eigen(h(k)).values)
             nk = reduce(+, (sym_op.op.rotation *  k_GSbasis) .* Gs) 
-            # note in k space translations do only add a phase and are not included
             enks = real.(eigen(h(nk)).values)
-            s += sum(sort(eks)-sort(enks))
+            s += sum(abs.(sort(eks)-sort(enks)))
         end
         if abs(s)<tol*num_points
             println(string(sym_op),":  ✔")
@@ -67,7 +65,8 @@ function test_magnetic_point_group_syntax(user_input)
     valid_symbols = Crystalline.MSG_OG_LABELS_V
     if user_input ∈ keys(schonflies_to_hm)
         HMlabel = schonflies_to_hm[user_input]
-        return findfirst(x -> x == HMlabel, valid_symbols)
+        MOG_number = findfirst(x -> x == HMlabel, valid_symbols)
+        return MOG_number, HMlabel
     else
         if user_input ∉ valid_symbols
             distances = [evaluate(Levenshtein(), user_input, s) for s in valid_symbols]
@@ -77,10 +76,31 @@ function test_magnetic_point_group_syntax(user_input)
             throw(ArgumentError("Syntax for the Magnetic Point Group not recognized. 
             Did you mean one of: $(top_suggestions)"))
         else 
-            return findfirst(x-> x==user_input, valid_symbols)
+            MOG_number = findfirst(x-> x==user_input, valid_symbols)
+            return MOG_number, user_input
         end
     end 
 end
+
+""" finds the parent space group (BSN1 number) of a given magnetic point group
+passed in Hermann–Mauguin notation, input for the Brillouin.irrfbz_path"""
+function parent_spacegroup(MSG, dim)
+    if dim == 3
+        for (k, v) in Crystalline.MSG_BNS_LABELs_D
+            if v == MSG
+                return k[1] #returns the OG number of the parent space group 
+            end
+        end
+    elseif dim == 2
+        if MSG ∈ wallpaper_HM
+            return findfirst(x-> x == MSG,  wallpaper_HM)
+        else 
+            throw(ArgumentError("Inputs inconsistency: Dim = $(dim) but the parent point group $(M) does not exist in 2D"))
+        end
+    else
+    return nothing end
+end
+
 #____________________________________________________________________________________________________
 ## Deprecated
 # function preliminary_symmetry_check(h::Function, Rs, point_group_number; 
@@ -106,3 +126,23 @@ end
 #         end
 #     end
 # end
+
+
+#sg = spacegroup(160, Val(2)) error
+
+
+#= to do 
+   # Rs_conv = directbasis(sg, Val(3)) 
+    # P = inv(Rs_custom) * Rs_conv
+    # P_inv = inv(P)
+    # P_T = P'
+    # Q = Rs * inv(Rs_conv)
+    # println("", keys(high_sym_momenta_Gsbasis))
+
+        # W_conv = sym_op.op.rotation
+        # W_custom = P_inv * W_conv * P
+        # W_new = P_inv * W * P
+        # W_k = transpose(P) * W * P^{-T} # in the user units
+        # k_new = kP_T * k_conv
+        
+=#
