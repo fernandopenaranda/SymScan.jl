@@ -95,7 +95,7 @@ function parent_spacegroup(MSG, dim)
         if MSG ∈ wallpaper_HM
             return findfirst(x-> x == MSG,  wallpaper_HM)
         else 
-            throw(ArgumentError("Inputs inconsistency: Dim = $(dim) but the parent point group $(M) does not exist in 2D"))
+            throw(ArgumentError("Inputs inconsistency: Dim = $(dim) but the parent point group $(MSG) does not exist in 2D"))
         end
     else
     return nothing end
