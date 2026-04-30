@@ -34,7 +34,7 @@ function preliminary_symmetry_check(h::Function, Rs, magnetic_point_group_label:
          tol = 1e-10, num_points = 100)
     OGnumber, HMlabel = test_magnetic_point_group_syntax(magnetic_point_group_label)
     dim = length(Rs) # k line in the BZ connecting the high_sym momenta:
-    ks_GSbasis = interpolate(irrfbz_path(parent_spacegroup(HMlabel, dim), Rs, dim), num_points) 
+    ks_GSbasis = interpolate(irrfbz_path(parent_spacegroup(HMlabel, dim), Rs), num_points) 
     Gs = Crystalline.Bravais.dualbasis(Rs)
     sg = mspacegroup(OGnumber)
     for sym_op in sg
