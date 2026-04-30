@@ -42,7 +42,7 @@ function preliminary_symmetry_check(h::Function, Rs, magnetic_point_group_label:
         for k_GSbasis in ks_GSbasis
             k =  reduce(+, k_GSbasis .* Gs) # k in the Hamiltonian basis 
             eks = real.(eigen(h(k)).values)
-            nk = reduce(+, (sym_op.op.rotation *  k_GSbasis) .* Gs) 
+            nk = reduce(+, (sym_op.op.rotation[1:dim,1:dim] *  k_GSbasis) .* Gs) 
             enks = real.(eigen(h(nk)).values)
             s += sum(abs.(sort(eks)-sort(enks)))
         end
